@@ -1,7 +1,6 @@
 ---
 title: "Mayo Clinic Yelp Review Text Analysis"
 author: RexManglicmot
-date: 11/12/22
 output: 
   html_notebook: 
     toc: yes
@@ -9,7 +8,10 @@ output:
 ---
 ## Status: Working project
 
-1. Need to fix why the head fucntion is showing up on Rstudio but not on the htmlm document
+1. Need to fix why the head function is showing up on Rstudio but not on the html document
+2. Need to create word clouds
+3. Import and adjust dictionaries
+4. Fix grammar
 
 ## Introduction
 Every year U.S.News publishes the best hospitals ranked within the U.S. Although the list does not contain all the hospitals within the U.S., it contains about ZYX amount. The top ranked hospital for 2022-23 is the Mayo Clinic based on U.S. News methodology. 
@@ -39,7 +41,7 @@ There were 228 reviews in total and the goal was to scrape all 228 reviews conta
 
 After various hours debugging the code and looking at html tags to discern appropiate tags to scrape, I was able to obtain all reviews within Yelp. Troubleshooting code included unintentionally scraping a response from a Mayo Clinic official that accrued in more than the 228 reviews.
 
-Nonetheless, below is the code used to scrape data. Mayo_Clinic file was saved on Rex's Macbook and is available within the repository. 
+Nonetheless, below is the code used to scrape data. Mayo_Clinic file is available within the repository. 
 ```{r Webscraping Yelp data, eval=FALSE}
 
 #load libraries
@@ -168,6 +170,7 @@ library(ggraph)
 data <- read.csv('Mayo_Clinic.csv')
 
 #View data
+#12/8/22 problem
 head(data) #why is this not showing up on the html_document?? BUG here
 ```
 
