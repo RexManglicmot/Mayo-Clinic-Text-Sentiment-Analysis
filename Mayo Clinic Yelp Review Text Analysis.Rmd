@@ -7,9 +7,11 @@ output:
     toc: yes
     theme: journal
 ---
-**Status: Working project**
+## Status: Working project
 
+1. Need to fix why the head fucntion is showing up on Rstudio but not on the htmlm document
 
+## Introduction
 Every year U.S.News publishes the best hospitals ranked within the U.S. Although the list does not contain all the hospitals within the U.S., it contains about ZYX amount. The top ranked hospital for 2022-23 is the Mayo Clinic based on U.S. News methodology. 
 
 To gain a better understanding why the Mayo Clinic is #1, I decided to use a Text Analysis on comments made by Yelp reviewers. Thus, this projects aims to understand user reviews through the Yelp platform, which is aimed to provide reviews to many businesses, including healthcare institutions (both private and public). 
@@ -37,8 +39,8 @@ There were 228 reviews in total and the goal was to scrape all 228 reviews conta
 
 After various hours debugging the code and looking at html tags to discern appropiate tags to scrape, I was able to obtain all reviews within Yelp. Troubleshooting code included unintentionally scraping a response from a Mayo Clinic official that accrued in more than the 228 reviews.
 
-Nonetheless, below is the code used to scrape data. Mayo_Clinic file was saved on Rex's Macbook and is available here. 
-```{r Webscraping Yelp data}
+Nonetheless, below is the code used to scrape data. Mayo_Clinic file was saved on Rex's Macbook and is available within the repository. 
+```{r Webscraping Yelp data, eval=FALSE}
 
 #load libraries
 library(tidyverse)
@@ -140,39 +142,44 @@ Mayo_Clinic <- data.frame('name' = reviewer_name_all,
                           'text'= review_text_all)
 
 #view csv file
-head(Mayo_Clinic)
+#head(Mayo_Clinic)
 ```
 
 ## EDA the Data
 Next, I needed to load packages, load data, and run an intital analysis on the raw data to better.
 
-```{r EDA the Data}
+```{r, EDA}
 #load libraries
 #install.packages('tidyverse') #had to re-install for some reason on 11/12/22
 #install.packages('ggraph') #had to re-install for some reason on 11/12/22
 
-library(tidyverse)
+#library(tidyverse)
 library(tidytext)
 library(widyr)
 library(RColorBrewer)
 library(wordcloud)
 library(igraph)
 library(ggraph)
+```
 
+
+```{r, EDA 2}
 #load Mayo Clinic data
 data <- read.csv('Mayo_Clinic.csv')
 
 #View data
-glimpse(data)
+head(data) #why is this not showing up on the html_document?? BUG here
+```
 
-##EDA for Ratings
 
+```{r, EDA 3}
 #quick check to see if reviewer_name appears more than once
 data %>%
   count(name, sort = TRUE)
 ```
 5 people reviewed twice.
-```{r EDA the Data Continued 2}
+
+```{r EDA 4}
 #quick check to see and sum if any NA are in rating variable
 sum(is.na(data$rating))
 
@@ -180,12 +187,15 @@ sum(is.na(data$rating))
 summary(data$rating)
 ```
 Looking at the summary statistics we see that the median and the max of the list is 5. What this means is that there are more of the 5 "ratings" in the list than there are others. The best way to view this, is via the barchart. 
-```{r EDA the Data Continued 3}
+```{r EDA 5}
 #create a barchart to count the values
 ggplot(data, aes(x=rating)) +
   geom_bar(color='black', fill='steelblue') +
   scale_fill_brewer(palette="Dark2")
+```
 
+
+```{r EDA 6}
 #create dataframe to build stacked barchart
 rating <- c(1,2,3,4,5)
 total <- c((sum(data$rating == 1)),
@@ -199,8 +209,4 @@ table3 <-data.frame(rating, total)
 print(table3)
 ```
 The barchart is an tried and true plot used to plot discrete variales. Here, we see that the ratings from 2 to 4, in terms of count, are minimal comapred to 1 and 5;with the 5 rating being the most popular amongnst the reviewers. Next is to see the distribution of such. 
-```{r EDA the Data Continued 4}
 
-ggplot(data, aes(rating,)) +
-  geom_histogram()
-```
