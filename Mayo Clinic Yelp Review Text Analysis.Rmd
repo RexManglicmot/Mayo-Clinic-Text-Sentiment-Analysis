@@ -1,0 +1,206 @@
+---
+title: "Mayo Clinic Yelp Review Text Analysis"
+author: RexManglicmot
+date: 11/12/22
+output: 
+  html_notebook: 
+    toc: yes
+    theme: journal
+---
+**Status: Working project**
+
+
+Every year U.S.News publishes the best hospitals ranked within the U.S. Although the list does not contain all the hospitals within the U.S., it contains about ZYX amount. The top ranked hospital for 2022-23 is the Mayo Clinic based on U.S. News methodology. 
+
+To gain a better understanding why the Mayo Clinic is #1, I decided to use a Text Analysis on comments made by Yelp reviewers. Thus, this projects aims to understand user reviews through the Yelp platform, which is aimed to provide reviews to many businesses, including healthcare institutions (both private and public). 
+
+The metrics used to understand Yelp are as follow
+
+This project is comprised of the following chapters:
+
+1. Webscraping Yelp Data
+2. Cleaning data
+3. EDA the Data
+3. Visualizations
+3. Plotting Word Cloud
+4. Plotting 
+
+## Webscraping Yelp Data
+Yelp data was scrapped on XYZ via the [Yelp](https://www.yelp.com/) website. Within the search engine bar, I typed in "### *Mayo Clinic*" and used the first result to scrape the data. 
+
+There were 228 reviews in total and the goal was to scrape all 228 reviews containing 4 metrics:
+
+1. reviewer name
+2. reviewer location
+3. review rating
+4. review text
+
+After various hours debugging the code and looking at html tags to discern appropiate tags to scrape, I was able to obtain all reviews within Yelp. Troubleshooting code included unintentionally scraping a response from a Mayo Clinic official that accrued in more than the 228 reviews.
+
+Nonetheless, below is the code used to scrape data. Mayo_Clinic file was saved on Rex's Macbook and is available here. 
+```{r Webscraping Yelp data}
+
+#load libraries
+library(tidyverse)
+library(rvest)
+
+#create an object to store the webpage address
+url <- 'https://www.yelp.com/biz/mayo-clinic-rochester-12?osq=Mayo+clinic'
+
+#convert the url to an html object for R processing
+webpage <- read_html(url)
+
+#create object to know page number on the webpage
+webpageNum <- webpage %>%
+  html_elements(xpath = "//div[@class= ' border-color--default__09f24__NPAKY text-align--center__09f24__fYBGO']") %>%
+  html_text() %>%
+  str_extract('of.*') %>%
+  str_remove('of ') %>%
+  as.numeric()
+
+#create a sequence to iterate for page number
+webpageSeq <- seq(from = 0, to = (webpageNum * 10)-10, by = 10)
+
+#store items into empty objects
+reviewer_name_all = c()
+reviewer_location_all = c()
+review_rating_all = c()
+review_text_all = c()
+
+#create a for loop to get values throughout the 23 pages
+for (i in webpageSeq) {
+  #need to create an if statement because the 1st page web address
+  if (i == 0) {
+    webpage <- read_html(url)
+    #need to create else because webpage has more content than 1st page web 
+    #address
+  } else {
+    webpage <- read_html(paste0(url, '&start=', i))
+  }
+  
+  #reviewer name
+  reviewer_name <- webpage %>%
+    #return elements that I specify via xpath method
+    #xpath is useful for locating elements
+    #// means to search within entire document
+    #* means to return any of the elements
+    # div means to search within document with the div tags
+    html_elements(xpath = "//div[starts-with(@class,' user-passport')]") %>%
+    #look within a tag within the previous element
+    html_elements(xpath = ".//a[starts-with(@href, '/user_details')]") %>%
+    html_text()
+  
+  #reviewer location
+  reviewer_location <- webpage %>%
+    #location is within the same div tag, so use same code
+    html_elements(xpath = "//div[starts-with(@class,' user-passport')]") %>%
+    #location is also located within the span tag
+    html_elements(xpath = ".//span[@class= ' css-qgunke']") %>%
+    html_text() %>%
+    #remove "Location" 
+    #pipe remaining values that are not "Location"
+    .[. !='Location']
+  
+  #review rating
+  review_rating <- webpage %>%
+    html_elements(xpath = "//div[starts-with(@class, ' review')]") %>%
+    #within div tag there is an aria-label
+    #contains function to look for aria-label that has rating  
+    html_elements(xpath = "(.//div[contains(@aria-label, 'star rating')])[1]")%>%
+    #ratings are not text, so must use different method and specify which 
+    #attribute to obtain
+    html_attr('aria-label') %>%
+    #remove star rating
+    str_remove_all(' star rating') %>%
+    #convert into a numeric
+    as.numeric()
+  
+  #review text
+  review_text <- webpage %>%
+    html_elements(xpath = "//div[starts-with(@class, ' review')]") %>%
+    #look throughout webpage with the p tag
+    #to get the first comment and not worr about business comment,
+    #need to put in brackets
+    html_elements(xpath = "(.//p[starts-with(@class, 'comment')])[1]") %>%
+    #html_elements(xpath = ".//span[starts-with(@class, ' raw')]") %>%
+    html_text()
+  
+  #appending to appropriate objects
+  reviewer_name_all = append(reviewer_name_all, reviewer_name)
+  reviewer_location_all = append(reviewer_location_all, reviewer_location)
+  review_rating_all = append(review_rating_all, review_rating)
+  review_text_all = append(review_text_all, review_text)
+  
+}
+
+#create a dataframe containing appended values
+Mayo_Clinic <- data.frame('name' = reviewer_name_all,
+                          'location' = reviewer_location_all,
+                          'rating' = review_rating_all,
+                          'text'= review_text_all)
+
+#view csv file
+head(Mayo_Clinic)
+```
+
+## EDA the Data
+Next, I needed to load packages, load data, and run an intital analysis on the raw data to better.
+
+```{r EDA the Data}
+#load libraries
+#install.packages('tidyverse') #had to re-install for some reason on 11/12/22
+#install.packages('ggraph') #had to re-install for some reason on 11/12/22
+
+library(tidyverse)
+library(tidytext)
+library(widyr)
+library(RColorBrewer)
+library(wordcloud)
+library(igraph)
+library(ggraph)
+
+#load Mayo Clinic data
+data <- read.csv('Mayo_Clinic.csv')
+
+#View data
+glimpse(data)
+
+##EDA for Ratings
+
+#quick check to see if reviewer_name appears more than once
+data %>%
+  count(name, sort = TRUE)
+```
+5 people reviewed twice.
+```{r EDA the Data Continued 2}
+#quick check to see and sum if any NA are in rating variable
+sum(is.na(data$rating))
+
+#calculate summary statistics
+summary(data$rating)
+```
+Looking at the summary statistics we see that the median and the max of the list is 5. What this means is that there are more of the 5 "ratings" in the list than there are others. The best way to view this, is via the barchart. 
+```{r EDA the Data Continued 3}
+#create a barchart to count the values
+ggplot(data, aes(x=rating)) +
+  geom_bar(color='black', fill='steelblue') +
+  scale_fill_brewer(palette="Dark2")
+
+#create dataframe to build stacked barchart
+rating <- c(1,2,3,4,5)
+total <- c((sum(data$rating == 1)),
+           (sum(data$rating == 2)),
+          (sum(data$rating == 3)),
+          (sum(data$rating == 4)),
+          (sum(data$rating == 5)))
+
+#create a table of all the rating sums
+table3 <-data.frame(rating, total)
+print(table3)
+```
+The barchart is an tried and true plot used to plot discrete variales. Here, we see that the ratings from 2 to 4, in terms of count, are minimal comapred to 1 and 5;with the 5 rating being the most popular amongnst the reviewers. Next is to see the distribution of such. 
+```{r EDA the Data Continued 4}
+
+ggplot(data, aes(rating,)) +
+  geom_histogram()
+```
