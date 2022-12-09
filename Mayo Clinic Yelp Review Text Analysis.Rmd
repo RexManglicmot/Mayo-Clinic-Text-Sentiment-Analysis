@@ -7,7 +7,6 @@ output:
 ---
 ## Status: Working project
 
-1. Need to fix why the head function is showing up on Rstudio but not on the html document
 2. Need to create word clouds
 3. Import and adjust dictionaries
 4. Fix grammar
@@ -149,7 +148,7 @@ Mayo_Clinic <- data.frame('name' = reviewer_name_all,
 ## EDA the Data
 Next, I needed to load packages, load data, and run an intital analysis on the raw data to better.
 
-```{r, EDA}
+```{r, EDA, warning=FALSE, message=FALSE }
 #load libraries
 #install.packages('tidyverse') #had to re-install for some reason on 11/12/22
 #install.packages('ggraph') #had to re-install for some reason on 11/12/22
@@ -163,14 +162,34 @@ library(igraph)
 library(ggraph)
 ```
 
-
+Now, let load the data. Instead of using the function str, let's expand my R code competency by using different functions
 ```{r, EDA 2}
 #load Mayo Clinic data
 data <- read.csv('Mayo_Clinic.csv')
 
-#View data
-#12/8/22 problem
-head(data) #why is this not showing up on the html_document?? BUG here
+#get the names of the variables
+colnames(data)
+
+#get the number of rows in the dataset
+dim(data)
+```
+Ok, we see that there is the X variable which indexes the observations. Let's get rid of that column and check it if worked.
+
+```{r}
+#remove the X column
+data <- data %>%
+  select(-X)
+
+#get the names other than the colnames funciton
+names(data)
+dim(data)
+```
+
+
+```{r, EDA 22}
+#View first 10 observations of the data
+head(data, n=25) #BUG why does it only show the 5th's obersvations text?
+#it shows perfectly fine on RStudio
 ```
 
 
