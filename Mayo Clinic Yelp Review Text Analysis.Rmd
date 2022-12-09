@@ -207,7 +207,10 @@ length(data$text)
 
 ```{r}
 #create a interactive table that shows the entirety of the dataset
+#BUG it shows on RStudio but not on GitHub
+#Need to debug
 DT::datatable(data)
+
 ```
 
 
