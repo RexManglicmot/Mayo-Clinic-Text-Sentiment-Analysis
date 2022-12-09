@@ -155,7 +155,7 @@ Next, I needed to load packages, load data, and run an intital analysis on the r
 #install.packages('tidyverse') #had to re-install for some reason on 11/12/22
 #install.packages('ggraph') #had to re-install for some reason on 11/12/22
 
-#library(tidyverse)
+library(tidyverse)
 library(tidytext)
 library(widyr)
 library(RColorBrewer)
