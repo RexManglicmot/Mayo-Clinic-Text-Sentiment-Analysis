@@ -4,6 +4,8 @@ author: RexManglicmot
 output: 
   github_document: 
     toc: yes
+
+always_allow_html: true
 ---
 ## Status: Working project
 Hi everyone. I’m continuing building my data analysis and R skills. As such, I would love feedback to better improve this project via rexmanglicmot@gmail.com. Any mistakes and misrepresentation of the data are my own.
@@ -156,7 +158,7 @@ Next, I needed to load packages, load data, and run an intital analysis on the r
 #load libraries
 #install.packages('tidyverse') #had to re-install for some reason on 11/12/22
 #install.packages('ggraph') #had to re-install for some reason on 11/12/22
-install.packages('DT')
+#install.packages('DT')
 
 library(tidyverse)
 library(tidytext)
@@ -204,6 +206,7 @@ length(data$text)
 
 
 ```{r}
+#create a interactive table that shows the entirety of the dataset
 DT::datatable(data)
 ```
 
