@@ -159,6 +159,7 @@ Next, I needed to load packages, load data, and run an intital analysis on the r
 #install.packages('tidyverse') #had to re-install for some reason on 11/12/22
 #install.packages('ggraph') #had to re-install for some reason on 11/12/22
 #install.packages('DT')
+#install.packages('gt')
 
 library(tidyverse)
 library(tidytext)
@@ -167,7 +168,7 @@ library(RColorBrewer)
 library(wordcloud)
 library(igraph)
 library(ggraph)
-library(DT)
+library(gt)
 ```
 
 Now, let load the data. Instead of using the function str, let's expand my R code competency by using different functions
@@ -206,12 +207,9 @@ length(data$text)
 
 
 ```{r}
-#create a interactive table that shows the entirety of the dataset
-#BUG it shows on RStudio but not on GitHub
-#Need to debug
-DT::datatable(data)
-
+#cbind(StrAlign(data, sep = "\\l"))
 ```
+
 
 
 ```{r, EDA 3}
@@ -250,7 +248,7 @@ total <- c((sum(data$rating == 1)),
 table3 <-data.frame(rating, total)
 print(table3)
 ```
-The barchart is an tried and true plot used to plot discrete variales. Here, we see that the ratings from 2 to 4, in terms of count, are minimal comapred to 1 and 5;with the 5 rating being the most popular amongnst the reviewers. Next is to see the distribution of such. 
+The barchart is an tried and true plot used to plot discrete variables. Here, we see that the ratings from 2 to 4, in terms of count, are minimal comapred to 1 and 5;with the 5 rating being the most popular amongnst the reviewers. Next is to see the distribution of such. 
 
 ## Limitations
 
