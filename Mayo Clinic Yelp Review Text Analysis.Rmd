@@ -2,9 +2,8 @@
 title: "Mayo Clinic Yelp Review Text Analysis"
 author: RexManglicmot
 output: 
-  html_notebook: 
+  github_document: 
     toc: yes
-    theme: journal
 ---
 ## Status: Working project
 
