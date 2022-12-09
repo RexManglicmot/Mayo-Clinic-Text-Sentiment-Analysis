@@ -6,7 +6,11 @@ output:
     toc: yes
 ---
 ## Status: Working project
+Hi everyone. I’m continuing building my data analysis and R skills. As such, I would love feedback to better improve this project via rexmanglicmot@gmail.com. Any mistakes and misrepresentation of the data are my own.
 
+Things Need to Do:
+
+1. Head function on the text column shows only the 5th observation's text but not the others. Need to figure out why. I used the count function on text column and it shows 228 observations. Maybe this is an RStudio issue?
 2. Need to create word clouds
 3. Import and adjust dictionaries
 4. Fix grammar
@@ -188,8 +192,12 @@ dim(data)
 
 ```{r, EDA 22}
 #View first 10 observations of the data
-head(data, n=25) #BUG why does it only show the 5th's obersvations text?
+#BUG why does it only show the 5th's obersvations text?
 #it shows perfectly fine on RStudio
+head(data, 15)
+
+#how many observations are in the text column
+length(data$text)
 ```
 
 
@@ -230,4 +238,11 @@ table3 <-data.frame(rating, total)
 print(table3)
 ```
 The barchart is an tried and true plot used to plot discrete variales. Here, we see that the ratings from 2 to 4, in terms of count, are minimal comapred to 1 and 5;with the 5 rating being the most popular amongnst the reviewers. Next is to see the distribution of such. 
+
+## Limitations
+
+## Conclusions
+
+## Appendix
+
 
