@@ -156,6 +156,7 @@ Next, I needed to load packages, load data, and run an intital analysis on the r
 #load libraries
 #install.packages('tidyverse') #had to re-install for some reason on 11/12/22
 #install.packages('ggraph') #had to re-install for some reason on 11/12/22
+install.packages('DT')
 
 library(tidyverse)
 library(tidytext)
@@ -164,6 +165,7 @@ library(RColorBrewer)
 library(wordcloud)
 library(igraph)
 library(ggraph)
+library(DT)
 ```
 
 Now, let load the data. Instead of using the function str, let's expand my R code competency by using different functions
@@ -198,6 +200,11 @@ head(data, 15)
 
 #how many observations are in the text column
 length(data$text)
+```
+
+
+```{r}
+DT::datatable(data)
 ```
 
 
