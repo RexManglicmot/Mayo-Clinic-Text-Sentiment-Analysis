@@ -171,7 +171,7 @@ Mayo_Clinic <- data.frame('name' = reviewer_name_all,
 
 ## Loading the Libraries
 
-```{r, EDA }
+```{r, EDA, warning=FALSE, message=FALSE }
 #load libraries
 #install.packages('tidyverse') #had to re-install for some reason on 11/12/22
 #install.packages('ggraph') #had to re-install for some reason on 11/12/22
