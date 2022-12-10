@@ -2,8 +2,9 @@ Mayo Clinic Yelp Review Text Analysis
 ================
 RexManglicmot
 
--   <a href="#status-working-project"
-    id="toc-status-working-project">Status: Working project</a>
+-   <a href="#status-contnuing-working-document"
+    id="toc-status-contnuing-working-document">Status: Contnuing Working
+    document</a>
 -   <a href="#introduction" id="toc-introduction">Introduction</a>
 -   <a href="#webscraping-yelp-data"
     id="toc-webscraping-yelp-data">Webscraping Yelp Data</a>
@@ -12,7 +13,7 @@ RexManglicmot
 -   <a href="#conclusions" id="toc-conclusions">Conclusions</a>
 -   <a href="#appendix" id="toc-appendix">Appendix</a>
 
-## Status: Working project
+## Status: Contnuing Working document
 
 Hi everyone. I’m continuing building my data analysis and R skills. As
 such, I would love feedback to better improve this project via
@@ -28,13 +29,30 @@ Things Need to Do:
 2.  Need to create word clouds
 3.  Import and adjust dictionaries
 4.  Fix grammar
+5.  list of the metrics in US News for evaluating hospitals and pick up
+    where they left off or, pick up on what is missing in their
+    analyses.
 
 ## Introduction
 
-Every year U.S.News publishes the best hospitals ranked within the U.S.
-Although the list does not contain all the hospitals within the U.S., it
-contains about ZYX amount. The top ranked hospital for 2022-23 is the
-Mayo Clinic based on U.S. News methodology.
+<center>
+
+![](https://target.scene7.com/is/image/Target/GUEST_1ec18fe8-25da-4ae9-a754-33f87564fdcb?wid=725&hei=725&qlt=80&fmt=webp)
+
+</center>
+
+What is the best hospital within the US? How do I know I’m getting the
+best care? These questions are sample of many as many Americans navigate
+the maze of the US private healthcare hospital system. With a total of
+6,093 US hospitals[^1], it leaves many to wonder which healthcare system
+they should ut their lives and money in. Not all hospitals are created
+equal as some are privately and publiced owned; some do well versus some
+do not.
+
+Thus, every year U.S. News publishes the best hospitals ranked within
+the U.S.[^2] Although the list does not contain all the hospitals, but
+contained about 4500. The top ranked hospital for 2022-23 is the Mayo
+Clinic based on U.S. News methodology.
 
 To gain a better understanding why the Mayo Clinic is \#1, I decided to
 use a Text Analysis on comments made by Yelp reviewers. Thus, this
@@ -586,3 +604,7 @@ amongnst the reviewers. Next is to see the distribution of such.
 ## Conclusions
 
 ## Appendix
+
+[^1]: <https://www.aha.org/statistics/fast-facts-us-hospitals>
+
+[^2]: <https://health.usnews.com/health-care/best-hospitals/articles/faq-how-and-why-we-rank-and-rate-hospitals>
