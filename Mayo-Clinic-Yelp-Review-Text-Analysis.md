@@ -8,7 +8,11 @@ RexManglicmot
 -   <a href="#introduction" id="toc-introduction">Introduction</a>
 -   <a href="#webscraping-yelp-data"
     id="toc-webscraping-yelp-data">Webscraping Yelp Data</a>
--   <a href="#eda-the-data" id="toc-eda-the-data">EDA the Data</a>
+-   <a href="#loading-the-libraries" id="toc-loading-the-libraries">Loading
+    the Libraries</a>
+-   <a href="#loading-the-data" id="toc-loading-the-data">Loading the
+    Data</a>
+-   <a href="#wordcloud" id="toc-wordcloud">WordCloud</a>
 -   <a href="#limitations" id="toc-limitations">Limitations</a>
 -   <a href="#conclusions" id="toc-conclusions">Conclusions</a>
 -   <a href="#appendix" id="toc-appendix">Appendix</a>
@@ -52,30 +56,42 @@ do not.
 Thus, every year U.S. News publishes the best hospitals ranked within
 the U.S.[^2] Although the list does not contain all the hospitals, but
 contained about 4500. The top ranked hospital for 2022-23 is the Mayo
-Clinic based on U.S. News methodology.
+Clinic based on U.S. News methodology. To gain a better understanding
+why the Mayo Clinic is \#1, I decided to use a Text Analysis on comments
+made by Yelp reviewers.
 
-To gain a better understanding why the Mayo Clinic is \#1, I decided to
-use a Text Analysis on comments made by Yelp reviewers. Thus, this
-projects aims to understand user reviews through the Yelp platform,
-which is aimed to provide reviews to many businesses, including
-healthcare institutions (both private and public).
+Thus, this projects aims to understand user reviews through the Yelp
+platform, which is aimed to provide reviews to many businesses,
+including healthcare institutions (both private and public). By
+undergoing this research, there are 3 objectives:
 
-The metrics used to understand Yelp are as follow
+1.  Uncover hidden word-themes that reflect the true sentiments by
+    patients that is also reproducible
+2.  Provide a starting point for hospital C-suite to reflect some of the
+    concerns patients have about their facility
+3.  Provide an opportunity for hospitals on the bottom part of the US
+    News list to reflect on their services to patients
+
+By using text data, there are an array of methods to deploy.
 
 This project is comprised of the following chapters:
 
 1.  Webscraping Yelp Data
-2.  Cleaning data
-3.  EDA the Data
-4.  Visualizations
-5.  Plotting Word Cloud
-6.  Plotting
+2.  Loading the Libraries
+3.  Loading the data
+4.  Cleaning the Data
+5.  Exploratory Data Analysis
+6.  Word Cloud
+7.  Positive and Negative Words
+8.  Limitations
+9.  Conclusion
+10. Inspiration for this project
 
 ## Webscraping Yelp Data
 
-Yelp data was scrapped on XYZ via the [Yelp](https://www.yelp.com/)
-website. Within the search engine bar, I typed in “\### *Mayo Clinic*”
-and used the first result to scrape the data.
+Yelp data was scrapped on via the [Yelp](https://www.yelp.com/) website.
+Within the search engine bar, I typed in “\### *Mayo Clinic*” and used
+the first result to scrape the data.
 
 There were 228 reviews in total and the goal was to scrape all 228
 reviews containing 4 metrics:
@@ -91,8 +107,8 @@ within Yelp. Troubleshooting code included unintentionally scraping a
 response from a Mayo Clinic official that accrued in more than the 228
 reviews.
 
-Nonetheless, below is the code used to scrape data. Mayo_Clinic file is
-available within the repository.
+Nonetheless, below is the code used to scrape data. Mayo_Clinic.csv file
+is available within the repository.
 
 ``` r
 #load libraries
@@ -198,10 +214,7 @@ Mayo_Clinic <- data.frame('name' = reviewer_name_all,
 #head(Mayo_Clinic)
 ```
 
-## EDA the Data
-
-Next, I needed to load packages, load data, and run an intital analysis
-on the raw data to better.
+## Loading the Libraries
 
 ``` r
 #load libraries
@@ -211,14 +224,58 @@ on the raw data to better.
 #install.packages('gt')
 
 library(tidyverse)
+```
+
+    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+    ## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
+    ## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+    ## ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
+    ## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+
+``` r
 library(tidytext)
 library(widyr)
 library(RColorBrewer)
 library(wordcloud)
 library(igraph)
+```
+
+    ## 
+    ## Attaching package: 'igraph'
+    ## 
+    ## The following objects are masked from 'package:dplyr':
+    ## 
+    ##     as_data_frame, groups, union
+    ## 
+    ## The following objects are masked from 'package:purrr':
+    ## 
+    ##     compose, simplify
+    ## 
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     crossing
+    ## 
+    ## The following object is masked from 'package:tibble':
+    ## 
+    ##     as_data_frame
+    ## 
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     decompose, spectrum
+    ## 
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     union
+
+``` r
 library(ggraph)
 library(gt)
 ```
+
+## Loading the Data
 
 Now, let load the data. Instead of using the function str, let’s expand
 my R code competency by using different functions
@@ -598,6 +655,8 @@ The barchart is an tried and true plot used to plot discrete variables.
 Here, we see that the ratings from 2 to 4, in terms of count, are
 minimal comapred to 1 and 5;with the 5 rating being the most popular
 amongnst the reviewers. Next is to see the distribution of such.
+
+## WordCloud
 
 ## Limitations
 
