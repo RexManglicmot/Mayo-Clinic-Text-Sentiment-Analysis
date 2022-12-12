@@ -36,8 +36,7 @@ data are my own.
 
 Things Need to Do/Questions:
 
--   Need to create wordclouds
--   Import and adjust dictionaries
+-   Import and adjust dictionaries + describe and cite them.
 -   Fix overall grammar
 -   Need to List of the metrics in US News for evaluating hospitals and
     pick up where they left off or, pick up on what is missing in their
@@ -48,7 +47,7 @@ Things Need to Do/Questions:
 -   learn how to remove file from Github (html document) but keep
     locally
 -   look for a dictionary that has Male and Female first names and run
-    it agaisnt data to see how many of each gender is present in the
+    it against data to see how many of each gender is present in the
     reviews
 -   look for code how to highlight certain columns in a barchart (i.e.,
     ratings barchart below)
@@ -583,8 +582,6 @@ data4 <- data2 %>%
   anti_join(stop_words) #we have less words now, like 1/3 got erased
 ```
 
-    ## Joining, by = "word"
-
 ``` r
 #count token data again without the stop words
 data4 %>%
@@ -627,8 +624,6 @@ Let’s see if that works
 data5 <- data4 %>%
   anti_join(stop_words2)
 ```
-
-    ## Joining, by = "word"
 
 ``` r
 #count token data again without the stop words and arrange the 
@@ -709,7 +704,7 @@ ggplot(data8, aes(x=word2, y= n)) +
   theme_classic()
 ```
 
-![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 wordcloud(
@@ -720,7 +715,13 @@ wordcloud(
 )
 ```
 
-![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+    ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
+    ## department could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
+    ## treatment could not be fit on page. It will not be plotted.
+
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 The wordcloud above shows the overall patient word count from the 228
 reviews. Now let’s create two additional wordclouds for those who rated
@@ -774,15 +775,18 @@ wordcloud(
 ```
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## doctor could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## insurance could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
     ## appointment could not be fit on page. It will not be plotted.
 
-![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## medical could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## hospital could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## care could not be fit on page. It will not be plotted.
+
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 ``` r
   wordcloud(
@@ -792,7 +796,7 @@ wordcloud(
   colors = 'orange')
 ```
 
-![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-25-2.png)<!-- -->
 
 Interesting. There is not much of a big difference amongst the three
 groups. There are two insights from this:
@@ -805,6 +809,63 @@ Next, lets use sentiment dictionaries on our three groups; overall, 1
 rating, and 5 rating.
 
 ## Sentiment: Positive and Negative Words
+
+**Explain more about Sentiment Analysis and cite sources**
+
+``` r
+#install.packages('SentimentAnalysis') #installed on 12/12/22
+# install.packages('textdata') #installed on 12/12/22
+
+#load libraries
+library(SentimentAnalysis)
+library(textdata)
+
+#use data6 as it is the most funnelled data
+sentiment_data <- data6 %>%
+  #used the nrc dictionary
+  inner_join(get_sentiments('nrc'))
+
+sentiment_data_nrc <- sentiment_data %>%
+  count(sentiment) %>%
+  mutate(sentiment2 = fct_reorder(sentiment, n))
+
+ggplot(sentiment_data_nrc, aes(x= sentiment2, y=n)) +
+  geom_col(fill = '#669933') +
+  coord_flip() +
+  theme_classic() +
+  labs(title = 'Mayo Clinic Sentiment Counts in NRC Dictionary',
+       x= 'Sentiment',
+       y = 'Counts')
+```
+
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+
+Interesting.
+
+Let’s try another dictionary, ‘loughran’
+
+``` r
+#use data6 as it is the most funneled data
+sentiment_data2 <- data6 %>%
+  #used the nrc dictionary
+  inner_join(get_sentiments('loughran'))
+
+sentiment_data_loughran <- sentiment_data2 %>%
+  count(sentiment) %>%
+  mutate(sentiment2 = fct_reorder(sentiment, n))
+
+ggplot(sentiment_data_loughran, aes(x= sentiment2, y=n)) +
+  geom_col(fill = '#FFCC66', width = 0.6) +
+  coord_flip() +
+  theme_classic() +
+  labs(title = 'Mayo Clinic Sentiment Counts in Loughran Dictionary',
+       x= 'Sentiment',
+       y = 'Counts')
+```
+
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+
+Even more interesting.
 
 ## Limitations
 

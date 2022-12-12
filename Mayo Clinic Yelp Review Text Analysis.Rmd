@@ -13,14 +13,13 @@ Hi everyone. I’m continuing building my data analysis and R skills. As such, I
 
 Things Need to Do/Questions:
 
-* Need to create wordclouds
-* Import and adjust dictionaries
+* Import and adjust dictionaries + describe and cite them.
 * Fix overall grammar
 * Need to List of the metrics in US News for evaluating hospitals and pick up where they left off or, pick up on what is missing in their analyses. 
 * Need to find code to align left on the text column in the cleaning section
 * Learn how to create a US heat map code in the EDA section
 * learn how to remove file from Github (html document) but keep locally
-* look for a dictionary that has Male and Female first names and run it agaisnt data to see how many of each gender is present in the reviews
+* look for a dictionary that has Male and Female first names and run it against data to see how many of each gender is present in the reviews
 * look for code how to highlight certain columns in a barchart (i.e., ratings barchart below)
 * Create and cite sources of the benefits of wordclouds
 * Properly center the US News pic on git_document (somehow works fine in RStudio html document?)
@@ -355,12 +354,15 @@ data3%>%
 
 Because meanings of an English sentence is an accumulation of words. There are certain words that have no substantial meaning (filler words) like for example, words like "the, a, an, of, etc.", so we need to do a bit of more data cleaning to make an effective wordcoud. We accomplish this task by adding a dictionary that contains stop words via a anti-join. Let's store this into a new object, data4.
 
-```{r}
+```{r, message=FALSE}
 #takeout stop words
 data4 <- data2 %>%
   unnest_tokens(word, text) %>%
   anti_join(stop_words) #we have less words now, like 1/3 got erased
+```
 
+
+```{r}
 #count token data again without the stop words
 data4 %>%
   count(word) %>%
@@ -381,11 +383,14 @@ stop_words2 <- stop_words %>%
 ```
 Let's see if that works
 
-```{r}
+```{r, message=FALSE}
 #takeout out custom words
 data5 <- data4 %>%
   anti_join(stop_words2)
+```
 
+
+```{r}
 #count token data again without the stop words and arrange the 
 data5 %>%
   count(word) %>%
@@ -506,6 +511,60 @@ Interesting. There is not much of a big difference amongst the three groups. The
 Next, lets use sentiment dictionaries on our three groups; overall, 1 rating, and 5 rating.
 
 ## Sentiment: Positive and Negative Words
+
+**Explain more about Sentiment Analysis and cite sources**
+
+```{r, message=FALSE}
+#install.packages('SentimentAnalysis') #installed on 12/12/22
+# install.packages('textdata') #installed on 12/12/22
+
+#load libraries
+library(SentimentAnalysis)
+library(textdata)
+
+#use data6 as it is the most funnelled data
+sentiment_data <- data6 %>%
+  #used the nrc dictionary
+  inner_join(get_sentiments('nrc'))
+
+sentiment_data_nrc <- sentiment_data %>%
+  count(sentiment) %>%
+  mutate(sentiment2 = fct_reorder(sentiment, n))
+
+ggplot(sentiment_data_nrc, aes(x= sentiment2, y=n)) +
+  geom_col(fill = '#669933') +
+  coord_flip() +
+  theme_classic() +
+  labs(title = 'Mayo Clinic Sentiment Counts in NRC Dictionary',
+       x= 'Sentiment',
+       y = 'Counts')
+
+```
+
+Interesting.
+
+Let's try another dictionary, 'loughran'
+
+```{r, message=FALSE}
+#use data6 as it is the most funneled data
+sentiment_data2 <- data6 %>%
+  #used the nrc dictionary
+  inner_join(get_sentiments('loughran'))
+
+sentiment_data_loughran <- sentiment_data2 %>%
+  count(sentiment) %>%
+  mutate(sentiment2 = fct_reorder(sentiment, n))
+
+ggplot(sentiment_data_loughran, aes(x= sentiment2, y=n)) +
+  geom_col(fill = '#FFCC66', width = 0.6) +
+  coord_flip() +
+  theme_classic() +
+  labs(title = 'Mayo Clinic Sentiment Counts in Loughran Dictionary',
+       x= 'Sentiment',
+       y = 'Counts')
+```
+
+Even more interesting.
 
 ## Limitations
 
