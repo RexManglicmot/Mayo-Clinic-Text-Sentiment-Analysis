@@ -197,7 +197,7 @@ library(gt)
 data <- read.csv('Mayo_Clinic.csv')
 ```
 
-## Exploratory Data Analysis
+## Cleaning the Data
 Since the data is loaded, instead of using the function str, let's expand my R code competency by using different functions to view the column names and the dimensions of the the data
 ```{r}
 #get the names of the variables
@@ -220,37 +220,58 @@ dim(data)
 
 Good. Now, let's view the first few rows of the dataset using the head function.
 ```{r}
-#View first 10 observations of the data
-#BUG why does it only show the 5th's obersvations text?
-#it shows perfectly fine on RStudio
-head(data, 15)
-str(data)
+#View first rows of the observations of the data
+head(data)
 
 #how many observations are in the text column
 length(data$text)
 ```
-
-
+At first glance, we see that text column is empty except for the fifth observation. we also confirm the count of number of observations in the text column. However, we when slide the cursor to the right, we see that character strings are aligned right (this is a default function of the dataframe). Now, let's do a left-align to make the dataset easier to intepret. 
 ```{r }
 #need to figure out how to align left on the text column
 #wrong code below
 #alignment(data, left = 'left')
 ```
-
-
-
-
+Great, now let's see if there are duplicates AND if there is more than one reviewer in the dataset. 
 ```{r}
+#check for duplicates
+sum(duplicated(data))
+
 #quick check to see if reviewer_name appears more than once
 data %>%
-  count(name, sort = TRUE)
+  count(name, sort = TRUE) %>%
+  #let's arbitarailys see the first 10 rows as base comparison
+  head(n=10)
 ```
-5 people reviewed twice.
+We see that there are no duplicates and 5 people gave a review twice, so a total of 223 different observations.
 
+In cleaning our data, let's see if there are any NA values and which columns. 
 ```{r}
-#quick check to see and sum if any NA are in rating variable
-sum(is.na(data$rating))
+#if any NA, then where in the dataset
+which(is.na(data))
 
+#quick check to see and sum if any NA are in rating variable
+sum(is.na(data))
+
+```
+As a last round for checking our data, the ratings are scaled from 1 to 5, let's check if there any numbers above and below
+```{r}
+#quick check to see if below 1 OR above 5
+any(data$rating > 5 | data$rating <1)
+
+#create functions
+numbers_only <- function(x) !grepl("\\D", x)
+letters_only <- function(x) !grepl("[^A-Za-z]", x)
+
+#let's double check the ratings column
+sum(numbers_only(data$rating))
+sum(letters_only(data$rating))
+
+```
+Now, that the data is cleaned thoroughly, let's explore the data. 
+
+## Exploring the Data
+```{r}
 #calculate summary statistics
 summary(data$rating)
 ```
