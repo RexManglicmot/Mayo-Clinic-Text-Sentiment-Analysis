@@ -660,17 +660,18 @@ data6 <- data5 %>%
 ```
 
 Now let’s get arrange the by the number of the most frequent words and
-get rid of words that occur **once** and **twice** since we are only
-interested in the most frequent words.
+get rid of words that occur **once**, **twice**, and **thrice** since we
+are only interested in the most frequent words.
 
 ``` r
 #count token data again without the numbers
 data7 <- data6 %>%
   count(word) %>%
-  arrange(desc(n)) 
-
-#data8 <- subset(data7, n!= 1 | n!=2)
+  arrange(desc(n)) %>%
+  filter(n!= 1 & n!= 2 & n!=3)
 ```
+
+Our data is further cleaned and ready to plot!!
 
 ## Limitations
 
