@@ -13,12 +13,16 @@ Hi everyone. I’m continuing building my data analysis and R skills. As such, I
 
 Things Need to Do/Questions:
 
-* Need to create word clouds
+* Need to create wordclouds
 * Import and adjust dictionaries
-* Fix grammar
+* Fix overall grammar
 * Need to List of the metrics in US News for evaluating hospitals and pick up where they left off or, pick up on what is missing in their analyses. 
 * Need to find code to align left on the text column in the cleaning section
 * Learn how to create a US heat map code in the EDA section
+* learn how to remove file from Github (html document) but keep locally
+* look for a dictionary that has Male and Female first names and run it agaisnt data to see how many of each gender is present in the reviews
+* look for code how to highlight certain columns in a barchart (i.e., ratings barchart below)
+* Create and cite sources of the benefits of wordclouds
 
 ## Introduction
 <center>
@@ -318,7 +322,22 @@ Now we see that for the 1 rating there are 72 reviews and for the 5 rating there
 What we can do for the next steps are to separate the 228 reviews into 3 sections; 1 rating, 5 rating, and overall rating and see what words are associated within each. That would be interesting to figure out. 
 
 ## WordCloud
+
+WordClouds are used to illustrate common words about a subject (Mayo Clinic in our case). Need to fill in more. 
+
+
+In order to make a wordcloud, we need to index each word within a given sentence per reviwer into a separate observation for counting purposes. As a result, the number of observations in our current dataset, 228, will increase by alot.
 ```{r}
+
+
+```
+
+
+
+
+Because meanings of an English sentence is an accumulation of words. There are certain words that have no substantial meaning (filler words) like for example, words like "the, a, an, of, etc.", so we need to do a bit of more data cleaning to make an effective wordcoud. 
+```{r}
+
 
 ```
 
