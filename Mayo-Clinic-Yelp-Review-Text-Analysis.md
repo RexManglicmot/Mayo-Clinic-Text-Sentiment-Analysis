@@ -14,8 +14,8 @@ RexManglicmot
     Data</a>
 -   <a href="#cleaning-the-data" id="toc-cleaning-the-data">Cleaning the
     Data</a>
--   <a href="#exploring-the-data" id="toc-exploring-the-data">Exploring the
-    Data</a>
+-   <a href="#exploratory-data-analysis"
+    id="toc-exploratory-data-analysis">Exploratory Data Analysis</a>
 -   <a href="#wordcloud" id="toc-wordcloud">WordCloud</a>
 -   <a href="#limitations" id="toc-limitations">Limitations</a>
 -   <a href="#conclusions" id="toc-conclusions">Conclusions</a>
@@ -31,18 +31,15 @@ data are my own.
 
 Things Need to Do/Questions:
 
-1.  Head function on the text column shows only the 5th observation’s
-    text but not the others. Need to figure out why. I used the count
-    function on text column and it shows 228 observations. Maybe this is
-    an RStudio issue?
-2.  Need to create word clouds
-3.  Import and adjust dictionaries
-4.  Fix grammar
-5.  list of the metrics in US News for evaluating hospitals and pick up
-    where they left off or, pick up on what is missing in their
+-   Need to create word clouds
+-   Import and adjust dictionaries
+-   Fix grammar
+-   Need to List of the metrics in US News for evaluating hospitals and
+    pick up where they left off or, pick up on what is missing in their
     analyses.
-6.  the rmd and md file do not sync? maybe I deleted the wrong
-    duplicate?
+-   Need to find code to align left on the text column in the cleaning
+    section
+-   Learn how to create a US heat map code in the EDA section
 
 ## Introduction
 
@@ -108,8 +105,8 @@ Yelp data was scrapped on via the [Yelp](https://www.yelp.com/) website.
 Within the search engine bar, I typed in *Mayo Clinic* and used the
 first “business result to scrape the data as it’s location, Rochester
 Minnesota matched on US News. Further, the business had
-a”blue-checkmark” with “Claimed” indicating that the business the
-legitimate.
+a”blue-checkmark” with “Claimed” indicating that the business was the
+legitimate Mayo Clinic.
 
 There were 228 reviews in total and the goal was to scrape all 228
 reviews containing these 4 metrics:
@@ -425,7 +422,21 @@ sum(letters_only(data$rating))
 
 Now, that the data is cleaned thoroughly, let’s explore the data.
 
-## Exploring the Data
+## Exploratory Data Analysis
+
+One of the first questions that came to mine was where these reviewers
+lived. Are they local residents near the Mayo Clinic or are they
+visting? I think answering this question could provide more detal about
+the reviews. So, let’s take the location column and graph it in the
+context of the US. But first, let’s create a new object for this data
+exploration
+
+``` r
+data_map <- data
+```
+
+The next question is to undertand patient ratings. So, let’s take the a
+summary of that.
 
 ``` r
 #calculate summary statistics
@@ -444,10 +455,21 @@ barchart.
 #create a barchart to count the values
 ggplot(data, aes(x=rating)) +
   geom_bar(color='black', fill='steelblue') +
-  scale_fill_brewer(palette="Dark2") 
+  scale_fill_brewer(palette="Dark2") +
+  theme_minimal() +
+  labs(title = 'Yelp Review Ratings',
+        x = 'Star Ratings',
+        y = 'Count')
 ```
 
-![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+Great. We see visually that there are more 1 and 5 ratings than there
+are 2, 3, or 4. What this means is that patients had extreme views of
+the hospital (with respect to the ratings category); “good” and “not
+good”, so to speak.
+
+Let’s get the actual values of these counts by building a table.
 
 ``` r
 #create dataframe to build stacked barchart
@@ -470,10 +492,13 @@ print(table3)
     ## 4      4     8
     ## 5      5   121
 
-The barchart is an tried and true plot used to plot discrete variables.
-Here, we see that the ratings from 2 to 4, in terms of count, are
-minimal compared to 1 and 5; with the 5 rating being the most popular
-amongnst the reviewers. Next is to see the distribution of such.
+Now we see that for the 1 rating there are 72 reviews and for the 5
+rating there are 121 (about 80%). Numerically, it seems the hospital has
+done relatively well.
+
+What we can do for the next steps are to separate the 228 reviews into 3
+sections; 1 rating, 5 rating, and overall rating and see what words are
+associated within each. That would be interesting to figure out.
 
 ## WordCloud
 
