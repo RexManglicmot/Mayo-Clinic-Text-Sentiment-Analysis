@@ -12,10 +12,13 @@ RexManglicmot
     the Libraries</a>
 -   <a href="#loading-the-data" id="toc-loading-the-data">Loading the
     Data</a>
+-   <a href="#exploratory-data-analysis"
+    id="toc-exploratory-data-analysis">Exploratory Data Analysis</a>
 -   <a href="#wordcloud" id="toc-wordcloud">WordCloud</a>
 -   <a href="#limitations" id="toc-limitations">Limitations</a>
 -   <a href="#conclusions" id="toc-conclusions">Conclusions</a>
--   <a href="#appendix" id="toc-appendix">Appendix</a>
+-   <a href="#inspiration-for-this-project"
+    id="toc-inspiration-for-this-project">Inspiration for this project</a>
 
 ## Status: Contnuing Working document
 
@@ -24,7 +27,7 @@ such, I would love feedback to better improve this project via
 <rexmanglicmot@gmail.com>. Any mistakes and misrepresentation of the
 data are my own.
 
-Things Need to Do:
+Things Need to Do/Questions:
 
 1.  Head function on the text column shows only the 5th observation’s
     text but not the others. Need to figure out why. I used the count
@@ -36,6 +39,8 @@ Things Need to Do:
 5.  list of the metrics in US News for evaluating hospitals and pick up
     where they left off or, pick up on what is missing in their
     analyses.
+6.  the rmd and md file do not sync? maybe I deleted the wrong
+    duplicate?
 
 ## Introduction
 
@@ -45,20 +50,28 @@ Things Need to Do:
 
 </center>
 
-What is the best hospital within the US? How do I know I’m getting the
-best care? These questions are sample of many as many Americans navigate
-the maze of the US private healthcare hospital system. With a total of
-6,093 US hospitals[^1], it leaves many to wonder which healthcare system
-they should ut their lives and money in. Not all hospitals are created
-equal as some are privately and publiced owned; some do well versus some
-do not.
+What is the best hospital within the US? Which one is the nearest to me?
+Where can find out what patients have to say about this XYZ hospital?
+These questions are sample of many questions as Americans navigate the
+maze of the US private healthcare hospital system. On average, health
+care spending is \$12,530 per person in 2022, which is up from \$11,462
+in 2019.[^1] With a total of 6,093 US hospitals[^2], it leaves many to
+wonder which healthcare system they should put their lives and money on.
+Unlike a single payer system, where the government covers majority of
+healthcare needs for its citizens (i.e. Canada, UK, and Australia), the
+US healthcare system is comprised of private and public conglomarate and
+individual hosptal systems. Therefore, in the US, not all hospitals are
+created equal as some are privately and publicized owned; some do well
+versus some do not.
 
-Thus, every year U.S. News publishes the best hospitals ranked within
-the U.S.[^2] Although the list does not contain all the hospitals, but
-contained about 4500. The top ranked hospital for 2022-23 is the Mayo
-Clinic based on U.S. News methodology. To gain a better understanding
-why the Mayo Clinic is \#1, I decided to use a Text Analysis on comments
-made by Yelp reviewers.
+There is a need to rank such hospitals. Thus, every year U.S. News
+publishes the best hospitals ranked within the U.S.[^3] Although the
+list does not contain all the hospitals, but contained about 4500. The
+top ranked hospital for 2022-23 is the Mayo Clinic based on U.S. News
+methodology. To gain a better understanding why the Mayo Clinic is \#1
+and to further build upon this study, I decided to use anothe method to
+better understand and use a Text Analysis on comments made by Yelp
+reviewers as a means.
 
 Thus, this projects aims to understand user reviews through the Yelp
 platform, which is aimed to provide reviews to many businesses,
@@ -78,7 +91,7 @@ This project is comprised of the following chapters:
 
 1.  Webscraping Yelp Data
 2.  Loading the Libraries
-3.  Loading the data
+3.  Loading the Data
 4.  Cleaning the Data
 5.  Exploratory Data Analysis
 6.  Word Cloud
@@ -90,25 +103,33 @@ This project is comprised of the following chapters:
 ## Webscraping Yelp Data
 
 Yelp data was scrapped on via the [Yelp](https://www.yelp.com/) website.
-Within the search engine bar, I typed in “\### *Mayo Clinic*” and used
-the first result to scrape the data.
+Within the search engine bar, I typed in *Mayo Clinic* and used the
+first “business result to scrape the data as it’s location, Rochester
+Minnesota matched on US News. Further, the business had
+a”blue-checkmark” with “Claimed” indicating that the business the
+legitimate.
 
 There were 228 reviews in total and the goal was to scrape all 228
-reviews containing 4 metrics:
+reviews containing these 4 metrics:
 
 1.  reviewer name
 2.  reviewer location
 3.  review rating
 4.  review text
 
+(I decided to exclude photos from the reviewers because of the scope of
+this project to analyze text data.)
+
 After various hours debugging the code and looking at html tags to
-discern appropiate tags to scrape, I was able to obtain all reviews
+discern appropriate tags to scrape, I was able to obtain all reviews
 within Yelp. Troubleshooting code included unintentionally scraping a
 response from a Mayo Clinic official that accrued in more than the 228
-reviews.
+reviews. A special acknowledgement to Samer Jijjazi for his YouTube
+tutorial in learning how to scrape data from Yelp.[^4] Watching his
+videos greatly helped me get the data needed to webscrape.
 
-Nonetheless, below is the code used to scrape data. Mayo_Clinic.csv file
-is available within the repository.
+Below is the code used to scrape data. Mayo_Clinic.csv file is available
+within the repository.
 
 ``` r
 #load libraries
@@ -224,66 +245,29 @@ Mayo_Clinic <- data.frame('name' = reviewer_name_all,
 #install.packages('gt')
 
 library(tidyverse)
-```
-
-    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-    ## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
-    ## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-    ## ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
-    ## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-
-``` r
 library(tidytext)
 library(widyr)
 library(RColorBrewer)
 library(wordcloud)
 library(igraph)
-```
-
-    ## 
-    ## Attaching package: 'igraph'
-    ## 
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     as_data_frame, groups, union
-    ## 
-    ## The following objects are masked from 'package:purrr':
-    ## 
-    ##     compose, simplify
-    ## 
-    ## The following object is masked from 'package:tidyr':
-    ## 
-    ##     crossing
-    ## 
-    ## The following object is masked from 'package:tibble':
-    ## 
-    ##     as_data_frame
-    ## 
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     decompose, spectrum
-    ## 
-    ## The following object is masked from 'package:base':
-    ## 
-    ##     union
-
-``` r
 library(ggraph)
 library(gt)
 ```
 
 ## Loading the Data
 
-Now, let load the data. Instead of using the function str, let’s expand
-my R code competency by using different functions
-
 ``` r
 #load Mayo Clinic data
 data <- read.csv('Mayo_Clinic.csv')
+```
 
+## Exploratory Data Analysis
+
+Since the data is loaded, instead of using the function str, let’s
+expand my R code competency by using different functions to view the
+column names and the dimensions of the the data
+
+``` r
 #get the names of the variables
 colnames(data)
 ```
@@ -316,6 +300,9 @@ dim(data)
 ```
 
     ## [1] 228   4
+
+Good. Now, let’s view the first few rows of the dataset using the head
+function.
 
 ``` r
 #View first 10 observations of the data
@@ -358,6 +345,16 @@ head(data, 15)
     ## 15                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   You are a horrible, horrible organization that poses as giving hope to solve health issues and played that game with us for a year and a half, then played GOD and took that hope away after we spent over $10,000.00 and insurance and medicare spent hundreds of thousands of dollars. Shame on you for taking advantage of us and insurance company and taxpayer dollars.
 
 ``` r
+str(data)
+```
+
+    ## 'data.frame':    228 obs. of  4 variables:
+    ##  $ name    : chr  "Stacey C." "Arin W." "Jessica S." "Fran H." ...
+    ##  $ location: chr  "Indianapolis, IN" "Chicago, IL" "Kansas City, MO" "San Francisco, CA" ...
+    ##  $ rating  : int  5 1 5 1 1 1 1 1 5 5 ...
+    ##  $ text    : chr  "I only have good things to say about Mayo.  A family member was diagnosed by their  local doctor with a conditi"| __truncated__ "The clinic might be great. I'll never know because they rejected me via form email that told me to \"keep perus"| __truncated__ "It's hard to put into words the size of this place. Amazing medical center with top notch doctors, nurses, and "| __truncated__ "Received a text saying I missed my appt with my provider. Problem is I haven't even been set up to see a provid"| __truncated__ ...
+
+``` r
 #how many observations are in the text column
 length(data$text)
 ```
@@ -365,7 +362,9 @@ length(data$text)
     ## [1] 228
 
 ``` r
-#cbind(StrAlign(data, sep = "\\l"))
+#need to figure out how to align left on the text column
+#wrong code below
+#alignment(data, left = 'left')
 ```
 
 ``` r
@@ -625,10 +624,10 @@ barchart.
 #create a barchart to count the values
 ggplot(data, aes(x=rating)) +
   geom_bar(color='black', fill='steelblue') +
-  scale_fill_brewer(palette="Dark2")
+  scale_fill_brewer(palette="Dark2") 
 ```
 
-![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/EDA%205-1.png)<!-- -->
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 #create dataframe to build stacked barchart
@@ -653,7 +652,7 @@ print(table3)
 
 The barchart is an tried and true plot used to plot discrete variables.
 Here, we see that the ratings from 2 to 4, in terms of count, are
-minimal comapred to 1 and 5;with the 5 rating being the most popular
+minimal compared to 1 and 5; with the 5 rating being the most popular
 amongnst the reviewers. Next is to see the distribution of such.
 
 ## WordCloud
@@ -662,8 +661,12 @@ amongnst the reviewers. Next is to see the distribution of such.
 
 ## Conclusions
 
-## Appendix
+## Inspiration for this project
 
-[^1]: <https://www.aha.org/statistics/fast-facts-us-hospitals>
+[^1]: <https://www.chcf.org/publication/2022-edition-health-care-costs-101/>
 
-[^2]: <https://health.usnews.com/health-care/best-hospitals/articles/faq-how-and-why-we-rank-and-rate-hospitals>
+[^2]: <https://www.aha.org/statistics/fast-facts-us-hospitals>
+
+[^3]: <https://health.usnews.com/health-care/best-hospitals/articles/faq-how-and-why-we-rank-and-rate-hospitals>
+
+[^4]: <https://www.youtube.com/watch?v=qyGYItbMKkM>

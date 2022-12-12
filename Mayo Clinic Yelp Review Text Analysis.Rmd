@@ -11,13 +11,14 @@ always_allow_html: true
 ## Status: Contnuing Working document
 Hi everyone. I’m continuing building my data analysis and R skills. As such, I would love feedback to better improve this project via rexmanglicmot@gmail.com. Any mistakes and misrepresentation of the data are my own.
 
-Things Need to Do:
+Things Need to Do/Questions:
 
 1. Head function on the text column shows only the 5th observation's text but not the others. Need to figure out why. I used the count function on text column and it shows 228 observations. Maybe this is an RStudio issue?
 2. Need to create word clouds
 3. Import and adjust dictionaries
 4. Fix grammar
 5. list of the metrics in US News for evaluating hospitals and pick up where they left off or, pick up on what is missing in their analyses. 
+6. the rmd and md file do not sync? maybe I deleted the wrong duplicate?
 
 ## Introduction
 <center>
@@ -26,9 +27,9 @@ Things Need to Do:
 
 </center>
 
-What is the best hospital within the US? How do I know I'm getting the best care? These questions are sample of many as many Americans navigate the maze of the US private healthcare hospital system. With a total of 6,093 US hospitals^[https://www.aha.org/statistics/fast-facts-us-hospitals], it leaves many to wonder which healthcare system they should ut their lives and money in. Not all hospitals are created equal as some are privately and publiced owned; some do well versus some do not. 
+What is the best hospital within the US? Which one is the nearest to me? Where can find out what patients have to say about this XYZ hospital? These questions are sample of many questions as Americans navigate the maze of the US private healthcare hospital system. On average, health care spending is $12,530 per person in 2022, which is up from $11,462 in 2019.^[https://www.chcf.org/publication/2022-edition-health-care-costs-101/] With a total of 6,093 US hospitals^[https://www.aha.org/statistics/fast-facts-us-hospitals], it leaves many to wonder which healthcare system they should put their lives and money on. Unlike a single payer system, where the government covers majority of healthcare needs for its citizens (i.e. Canada, UK, and Australia), the US healthcare system is comprised of private and public conglomarate and individual hosptal systems. Therefore, in the US, not all hospitals are created equal as some are privately and publicized owned; some do well versus some do not. 
 
-Thus, every year U.S. News publishes the best hospitals ranked within the U.S.^[https://health.usnews.com/health-care/best-hospitals/articles/faq-how-and-why-we-rank-and-rate-hospitals] Although the list does not contain all the hospitals, but contained about 4500. The top ranked hospital for 2022-23 is the Mayo Clinic based on U.S. News methodology. To gain a better understanding why the Mayo Clinic is #1, I decided to use a Text Analysis on comments made by Yelp reviewers. 
+There is a need to rank such hospitals. Thus, every year U.S. News publishes the best hospitals ranked within the U.S.^[https://health.usnews.com/health-care/best-hospitals/articles/faq-how-and-why-we-rank-and-rate-hospitals] Although the list does not contain all the hospitals, but contained about 4500. The top ranked hospital for 2022-23 is the Mayo Clinic based on U.S. News methodology. To gain a better understanding why the Mayo Clinic is #1 and to further build upon this study, I decided to use anothe method to better understand and use a Text Analysis on comments made by Yelp reviewers as a means. 
 
 Thus, this projects aims to understand user reviews through the Yelp platform, which is aimed to provide reviews to many businesses, including healthcare institutions (both private and public). By undergoing this research, there are 3 objectives:
 
@@ -42,7 +43,7 @@ This project is comprised of the following chapters:
 
 1. Webscraping Yelp Data
 2. Loading the Libraries
-3. Loading the data
+3. Loading the Data
 4. Cleaning the Data
 5. Exploratory Data Analysis
 6. Word Cloud
@@ -52,18 +53,20 @@ This project is comprised of the following chapters:
 10. Inspiration for this project
 
 ## Webscraping Yelp Data
-Yelp data was scrapped on via the [Yelp](https://www.yelp.com/) website. Within the search engine bar, I typed in "### *Mayo Clinic*" and used the first result to scrape the data. 
+Yelp data was scrapped on via the [Yelp](https://www.yelp.com/) website. Within the search engine bar, I typed in *Mayo Clinic* and used the first "business result to scrape the data as it's location, Rochester Minnesota matched on US News. Further, the business had a "blue-checkmark" with "Claimed" indicating that the business the legitimate.
 
-There were 228 reviews in total and the goal was to scrape all 228 reviews containing 4 metrics:
+There were 228 reviews in total and the goal was to scrape all 228 reviews containing these 4 metrics:
 
 1. reviewer name
 2. reviewer location
 3. review rating
 4. review text
 
-After various hours debugging the code and looking at html tags to discern appropiate tags to scrape, I was able to obtain all reviews within Yelp. Troubleshooting code included unintentionally scraping a response from a Mayo Clinic official that accrued in more than the 228 reviews.
+(I decided to exclude photos from the reviewers because of the scope of this project to analyze text data.) 
 
-Nonetheless, below is the code used to scrape data. Mayo_Clinic.csv file is available within the repository. 
+After various hours debugging the code and looking at html tags to discern appropriate tags to scrape, I was able to obtain all reviews within Yelp. Troubleshooting code included unintentionally scraping a response from a Mayo Clinic official that accrued in more than the 228 reviews. A special acknowledgement to Samer Jijjazi for his YouTube tutorial in learning how to scrape data from Yelp.^[https://www.youtube.com/watch?v=qyGYItbMKkM] Watching his videos greatly helped me get the data needed to webscrape.
+
+Below is the code used to scrape data. Mayo_Clinic.csv file is available within the repository. 
 ```{r Webscraping Yelp data, eval=FALSE}
 
 #load libraries
@@ -171,7 +174,7 @@ Mayo_Clinic <- data.frame('name' = reviewer_name_all,
 
 ## Loading the Libraries
 
-```{r, EDA }
+```{r, message=FALSE, EDA }
 #load libraries
 #install.packages('tidyverse') #had to re-install for some reason on 11/12/22
 #install.packages('ggraph') #had to re-install for some reason on 11/12/22
@@ -189,11 +192,14 @@ library(gt)
 ```
 
 ## Loading the Data
-Now, let load the data. Instead of using the function str, let's expand my R code competency by using different functions
-```{r, EDA 2}
+```{r, message=FALSE}
 #load Mayo Clinic data
 data <- read.csv('Mayo_Clinic.csv')
+```
 
+## Exploratory Data Analysis
+Since the data is loaded, instead of using the function str, let's expand my R code competency by using different functions to view the column names and the dimensions of the the data
+```{r}
 #get the names of the variables
 colnames(data)
 
@@ -212,32 +218,36 @@ names(data)
 dim(data)
 ```
 
-
-```{r, EDA 22}
+Good. Now, let's view the first few rows of the dataset using the head function.
+```{r}
 #View first 10 observations of the data
 #BUG why does it only show the 5th's obersvations text?
 #it shows perfectly fine on RStudio
 head(data, 15)
+str(data)
 
 #how many observations are in the text column
 length(data$text)
 ```
 
 
-```{r}
-#cbind(StrAlign(data, sep = "\\l"))
+```{r }
+#need to figure out how to align left on the text column
+#wrong code below
+#alignment(data, left = 'left')
 ```
 
 
 
-```{r, EDA 3}
+
+```{r}
 #quick check to see if reviewer_name appears more than once
 data %>%
   count(name, sort = TRUE)
 ```
 5 people reviewed twice.
 
-```{r EDA 4}
+```{r}
 #quick check to see and sum if any NA are in rating variable
 sum(is.na(data$rating))
 
@@ -245,15 +255,14 @@ sum(is.na(data$rating))
 summary(data$rating)
 ```
 Looking at the summary statistics we see that the median and the max of the list is 5. What this means is that there are more of the 5 "ratings" in the list than there are others. The best way to view this, is via the barchart. 
-```{r EDA 5}
+```{r}
 #create a barchart to count the values
 ggplot(data, aes(x=rating)) +
   geom_bar(color='black', fill='steelblue') +
-  scale_fill_brewer(palette="Dark2")
+  scale_fill_brewer(palette="Dark2") 
 ```
 
-
-```{r EDA 6}
+```{r}
 #create dataframe to build stacked barchart
 rating <- c(1,2,3,4,5)
 total <- c((sum(data$rating == 1)),
@@ -266,7 +275,9 @@ total <- c((sum(data$rating == 1)),
 table3 <-data.frame(rating, total)
 print(table3)
 ```
-The barchart is an tried and true plot used to plot discrete variables. Here, we see that the ratings from 2 to 4, in terms of count, are minimal comapred to 1 and 5;with the 5 rating being the most popular amongnst the reviewers. Next is to see the distribution of such. 
+The barchart is an tried and true plot used to plot discrete variables. Here, we see that the ratings from 2 to 4, in terms of count, are minimal compared to 1 and 5; with the 5 rating being the most popular amongnst the reviewers. Next is to see the distribution of such. 
+
+
 
 ## WordCloud
 ```{r}
@@ -278,6 +289,6 @@ The barchart is an tried and true plot used to plot discrete variables. Here, we
 
 ## Conclusions
 
-## Appendix
+## Inspiration for this project
 
 
