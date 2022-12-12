@@ -16,7 +16,11 @@ RexManglicmot
     Data</a>
 -   <a href="#exploratory-data-analysis"
     id="toc-exploratory-data-analysis">Exploratory Data Analysis</a>
--   <a href="#wordcloud" id="toc-wordcloud">WordCloud</a>
+-   <a href="#column-charts-and-wordclouds"
+    id="toc-column-charts-and-wordclouds">Column Charts and WordClouds</a>
+-   <a href="#sentiment-positive-and-negative-words"
+    id="toc-sentiment-positive-and-negative-words">Sentiment: Positive and
+    Negative Words</a>
 -   <a href="#limitations" id="toc-limitations">Limitations</a>
 -   <a href="#conclusions" id="toc-conclusions">Conclusions</a>
 -   <a href="#inspiration-for-this-project"
@@ -103,8 +107,8 @@ This project is comprised of the following chapters:
 3.  Loading the Data
 4.  Cleaning the Data
 5.  Exploratory Data Analysis
-6.  Word Cloud
-7.  Positive and Negative Words
+6.  Column Charts and WordClouds
+7.  Sentiment: Positive and Negative Words
 8.  Limitations
 9.  Conclusion
 10. Inspiration for this project
@@ -465,7 +469,7 @@ barchart.
 ``` r
 #create a barchart to count the values
 ggplot(data, aes(x=rating)) +
-  geom_bar(color='black', fill='steelblue') +
+  geom_bar(color='black', fill='steelblue', width = .7) +
   scale_fill_brewer(palette="Dark2") +
   theme_minimal() +
   labs(title = 'Yelp Review Ratings',
@@ -511,7 +515,7 @@ What we can do for the next steps are to separate the 228 reviews into 3
 sections; 1 rating, 5 rating, and overall rating and see what words are
 associated within each. That would be interesting to figure out.
 
-## WordCloud
+## Column Charts and WordClouds
 
 WordClouds are used to illustrate common words about a subject (Mayo
 Clinic in our case). **Need to fill in more.**
@@ -655,8 +659,7 @@ Let’s get rid of numbers in the list.
 #not interested in numbers, need to filter out
 data6 <- data5 %>%
   #include words that has at least one alphabetical charachter in each out
-  filter(str_detect(word, '[:alpha:]')) %>%
-  subset()
+  filter(str_detect(word, '[:alpha:]')) 
 ```
 
 Now let’s get arrange the by the number of the most frequent words and
@@ -669,9 +672,59 @@ data7 <- data6 %>%
   count(word) %>%
   arrange(desc(n)) %>%
   filter(n!= 1 & n!= 2 & n!=3)
+
+dim(data7)
 ```
 
+    ## [1] 659   2
+
+``` r
+str(data7)
+```
+
+    ## 'data.frame':    659 obs. of  2 variables:
+    ##  $ word: chr  "care" "time" "doctor" "doctors" ...
+    ##  $ n   : int  122 106 102 99 93 81 80 80 75 72 ...
+
 Our data is further cleaned and ready to plot!!
+
+``` r
+library(ggplot2)
+
+#lets filter for top 50 words
+data8 <- data7 %>%
+  filter(n > 50) %>%
+  #rearrange for ggplot 
+  mutate(word2 = fct_reorder(word, n))
+
+#plot the data
+ggplot(data8, aes(x=word2, y= n)) +
+  geom_col(fill = 'lightblue', color= 'black') + 
+  coord_flip() +
+  labs(title = "Top Words That Patients Use To Describe the Mayo Clinic ",
+       x = 'Count',
+       y = 'Words') +
+  theme_classic()
+```
+
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+``` r
+wordcloud(
+  words = data7$word,
+  freq = data7$n,
+  max.words = 50,
+  colors = 'lightblue'
+)
+```
+
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+
+The wordcloud above shows the overall patient word count from the 228
+reviews. Now let’s create two addtional wordclouds for those who rated
+Mayo Clinic 1 and 5 stars.
+
+## Sentiment: Positive and Negative Words
 
 ## Limitations
 

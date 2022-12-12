@@ -51,8 +51,8 @@ This project is comprised of the following chapters:
 3. Loading the Data
 4. Cleaning the Data
 5. Exploratory Data Analysis
-6. Word Cloud
-7. Positive and Negative Words
+6. Column Charts and WordClouds
+7. Sentiment: Positive and Negative Words
 8. Limitations
 9. Conclusion
 10. Inspiration for this project
@@ -295,7 +295,7 @@ Looking at the summary statistics we see that the median and the max of the list
 ```{r}
 #create a barchart to count the values
 ggplot(data, aes(x=rating)) +
-  geom_bar(color='black', fill='steelblue') +
+  geom_bar(color='black', fill='steelblue', width = .7) +
   scale_fill_brewer(palette="Dark2") +
   theme_minimal() +
   labs(title = 'Yelp Review Ratings',
@@ -323,7 +323,7 @@ Now we see that for the 1 rating there are 72 reviews and for the 5 rating there
 
 What we can do for the next steps are to separate the 228 reviews into 3 sections; 1 rating, 5 rating, and overall rating and see what words are associated within each. That would be interesting to figure out. 
 
-## WordCloud
+## Column Charts and WordClouds
 WordClouds are used to illustrate common words about a subject (Mayo Clinic in our case). **Need to fill in more.** 
 
 In order to make a wordcloud, we need to index each word within a given sentence per reviwer into a separate observation for counting purposes. As a result, the number of observations in our current dataset, 228, will increase by a lot. This process is called Tokenizing the data. But, first lets trop some irrelevant columns (name, location, and ratings) and double check the class and store this into a new object, data2.
@@ -397,8 +397,7 @@ Let's get rid of numbers in the list.
 #not interested in numbers, need to filter out
 data6 <- data5 %>%
   #include words that has at least one alphabetical charachter in each out
-  filter(str_detect(word, '[:alpha:]')) %>%
-  subset()
+  filter(str_detect(word, '[:alpha:]')) 
 ```
 Now let's get arrange the by the number of the most frequent words and get rid of words that occur **once**, **twice**, and **thrice** since we are only interested in the most frequent words.
 
@@ -408,10 +407,48 @@ data7 <- data6 %>%
   count(word) %>%
   arrange(desc(n)) %>%
   filter(n!= 1 & n!= 2 & n!=3)
+
+dim(data7)
+str(data7)
+
 ```
 Our data is further cleaned and ready to plot!!
 
+```{r}
+library(ggplot2)
 
+#lets filter for top 50 words
+data8 <- data7 %>%
+  filter(n > 50) %>%
+  #rearrange for ggplot 
+  mutate(word2 = fct_reorder(word, n))
+
+#plot the data
+ggplot(data8, aes(x=word2, y= n)) +
+  geom_col(fill = 'lightblue', color= 'black') + 
+  coord_flip() +
+  labs(title = "Top Words That Patients Use To Describe the Mayo Clinic ",
+       x = 'Count',
+       y = 'Words') +
+  theme_classic()
+```
+
+```{r}
+wordcloud(
+  words = data7$word,
+  freq = data7$n,
+  max.words = 50,
+  colors = 'lightblue'
+)
+```
+
+The wordcloud above shows the overall patient word count from the 228 reviews. Now let's create two addtional wordclouds for those who rated Mayo Clinic 1 and 5 stars.
+
+```{r}
+
+```
+
+## Sentiment: Positive and Negative Words
 
 ## Limitations
 
