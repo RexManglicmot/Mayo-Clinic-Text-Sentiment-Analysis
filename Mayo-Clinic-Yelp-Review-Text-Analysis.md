@@ -2,9 +2,9 @@ Mayo Clinic Yelp Review Text Analysis
 ================
 RexManglicmot
 
--   <a href="#status-contnuing-working-document"
-    id="toc-status-contnuing-working-document">Status: Contnuing Working
-    document</a>
+-   <a href="#status-continuing-working-document"
+    id="toc-status-continuing-working-document">Status: Continuing Working
+    Document</a>
 -   <a href="#introduction" id="toc-introduction">Introduction</a>
 -   <a href="#webscraping-yelp-data"
     id="toc-webscraping-yelp-data">Webscraping Yelp Data</a>
@@ -22,7 +22,7 @@ RexManglicmot
 -   <a href="#inspiration-for-this-project"
     id="toc-inspiration-for-this-project">Inspiration for this project</a>
 
-## Status: Contnuing Working document
+## Status: Continuing Working Document
 
 Hi everyone. I’m continuing building my data analysis and R skills. As
 such, I would love feedback to better improve this project via
@@ -48,6 +48,8 @@ Things Need to Do/Questions:
 -   look for code how to highlight certain columns in a barchart (i.e.,
     ratings barchart below)
 -   Create and cite sources of the benefits of wordclouds
+-   Properly center the US News pic on git_document (somehow works fine
+    in RStudio html document?)
 
 ## Introduction
 
@@ -259,6 +261,7 @@ library(wordcloud)
 library(igraph)
 library(ggraph)
 library(gt)
+library(dplyr)
 ```
 
 ## Loading the Data
@@ -511,17 +514,163 @@ associated within each. That would be interesting to figure out.
 ## WordCloud
 
 WordClouds are used to illustrate common words about a subject (Mayo
-Clinic in our case). Need to fill in more.
+Clinic in our case). **Need to fill in more.**
 
 In order to make a wordcloud, we need to index each word within a given
 sentence per reviwer into a separate observation for counting purposes.
 As a result, the number of observations in our current dataset, 228,
-will increase by alot.
+will increase by a lot. This process is called Tokenizing the data. But,
+first lets trop some irrelevant columns (name, location, and ratings)
+and double check the class and store this into a new object, data2.
+
+``` r
+##Tokenize data
+
+#drop irrelevant columns by indexing 
+data2 <- data[-c(1:3)] 
+
+#let's double check the str to see it is a character 
+is.character(data2$text)
+```
+
+    ## [1] TRUE
+
+Now let’s break up the sentences into individual words (tokenizing).,
+
+``` r
+#tokenize data
+data3<- data2 %>%
+  #break up each sentence in the text and assign them an individual row
+  unnest_tokens(word, text)
+
+#count token data
+data3%>%
+  count(word) %>%
+  #count with the highest tally of words on top of the list
+  arrange(desc(n)) %>%
+  head(n=10)
+```
+
+    ##    word    n
+    ## 1   the 1454
+    ## 2    to 1123
+    ## 3   and 1115
+    ## 4     i  939
+    ## 5     a  784
+    ## 6    of  551
+    ## 7    in  456
+    ## 8    my  454
+    ## 9   was  449
+    ## 10 they  431
 
 Because meanings of an English sentence is an accumulation of words.
 There are certain words that have no substantial meaning (filler words)
 like for example, words like “the, a, an, of, etc.”, so we need to do a
-bit of more data cleaning to make an effective wordcoud.
+bit of more data cleaning to make an effective wordcoud. We accomplish
+this task by adding a dictionary that contains stop words via a
+anti-join. Let’s store this into a new object, data4.
+
+``` r
+#takeout stop words
+data4 <- data2 %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) #we have less words now, like 1/3 got erased
+```
+
+    ## Joining, by = "word"
+
+``` r
+#count token data again without the stop words
+data4 %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+  head(n=10)
+```
+
+    ##           word   n
+    ## 1         mayo 314
+    ## 2       clinic 154
+    ## 3         care 122
+    ## 4         time 106
+    ## 5       doctor 102
+    ## 6      doctors  99
+    ## 7           dr  93
+    ## 8  appointment  81
+    ## 9      medical  80
+    ## 10     patient  80
+
+We see that the words “mayo” and “clinic” are 1st and 2nd most used
+words, respectively. Let’s clean up a bit further by adding these words
+to the dictionary and cbinding it.
+
+``` r
+custom_stop_words <- tribble(
+  ~word, ~lexicon,
+  'mayo', 'CUSTOM',
+  'clinic', 'CUSTOM',
+)
+
+stop_words2 <- stop_words %>%
+  bind_rows(custom_stop_words)
+```
+
+Let’s see if that works
+
+``` r
+#takeout out custom words
+data5 <- data4 %>%
+  anti_join(stop_words2)
+```
+
+    ## Joining, by = "word"
+
+``` r
+#count token data again without the stop words and arrange the 
+data5 %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+  head(n=15)
+```
+
+    ##           word   n
+    ## 1         care 122
+    ## 2         time 106
+    ## 3       doctor 102
+    ## 4      doctors  99
+    ## 5           dr  93
+    ## 6  appointment  81
+    ## 7      medical  80
+    ## 8      patient  80
+    ## 9     hospital  75
+    ## 10         day  72
+    ## 11       staff  69
+    ## 12     surgery  64
+    ## 13        told  55
+    ## 14        life  51
+    ## 15      people  50
+
+Let’s get rid of numbers in the list.
+
+``` r
+#not interested in numbers, need to filter out
+data6 <- data5 %>%
+  #include words that has at least one alphabetical charachter in each out
+  filter(str_detect(word, '[:alpha:]')) %>%
+  subset()
+```
+
+Now let’s get arrange the by the number of the most frequent words and
+get rid of words that occur **once** and **twice** since we are only
+interested in the most frequent words.
+
+``` r
+#count token data again without the numbers
+data7 <- data6 %>%
+  count(word) %>%
+  arrange(desc(n)) 
+
+#data8 <- subset(data7, n!= 1 | n!=2)
+```
 
 ## Limitations
 
