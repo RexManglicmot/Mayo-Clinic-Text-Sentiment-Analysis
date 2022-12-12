@@ -23,6 +23,7 @@ RexManglicmot
     Negative Words</a>
 -   <a href="#limitations" id="toc-limitations">Limitations</a>
 -   <a href="#conclusions" id="toc-conclusions">Conclusions</a>
+-   <a href="#appendix" id="toc-appendix">Appendix</a>
 -   <a href="#inspiration-for-this-project"
     id="toc-inspiration-for-this-project">Inspiration for this project</a>
 
@@ -111,7 +112,8 @@ This project is comprised of the following chapters:
 7.  Sentiment: Positive and Negative Words
 8.  Limitations
 9.  Conclusion
-10. Inspiration for this project
+10. Appendix
+11. Inspiration for this project
 
 ## Webscraping Yelp Data
 
@@ -721,14 +723,94 @@ wordcloud(
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 The wordcloud above shows the overall patient word count from the 228
-reviews. Now let’s create two addtional wordclouds for those who rated
+reviews. Now let’s create two additional wordclouds for those who rated
 Mayo Clinic 1 and 5 stars.
+
+``` r
+#take original data set and pipe
+data_A <-data %>%
+  # get rid of all the columns name and location
+  select(-name, -location) %>%
+  # get rid of ratings 2, 3, and 4
+  subset(rating != 2 & rating !=3 & rating !=4) %>%
+  arrange(rating)
+
+#create object that contains only 1 and 5 ratings only
+data_A1 <- data_A %>%
+  subset(rating != 5)
+
+data_A5 <- data_A %>%
+  subset(rating != 1)
+
+#follow tokenize process for 1 rating
+data_A1T <- data_A1 %>%
+  #get rid of the rating category as this is not important anymore
+  select(-rating) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words2) %>%
+  filter(str_detect(word, '[:alpha:]')) %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+    filter(n!= 1 & n!= 2 & n!=3)
+
+#follow tokenize process for 5 rating
+data_A5T <- data_A5 %>%
+  #get rid of the rating category as this is not important anymore
+  select(-rating) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words2) %>%
+  filter(str_detect(word, '[:alpha:]')) %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+  filter(n!= 1 & n!= 2 & n!=3)
+```
+
+``` r
+wordcloud(
+  words = data_A1T$word,
+  freq = data_A1T$n,
+  max.words = 50,
+  colors = 'red')
+```
+
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## doctor could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## insurance could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## appointment could not be fit on page. It will not be plotted.
+
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+``` r
+  wordcloud(
+  words = data_A5T$word,
+  freq = data_A5T$n,
+  max.words = 50,
+  colors = 'orange')
+```
+
+![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
+
+Interesting. There is not much of a big difference amongst the three
+groups. There are two insights from this:
+
+1.  Maybe further filtering of words should be the next steps or,
+2.  Wordclouds are not the best medium to understand a patient views on
+    a healthcare system.
+
+Next, lets use sentiment dictionaries on our three groups; overall, 1
+rating, and 5 rating.
 
 ## Sentiment: Positive and Negative Words
 
 ## Limitations
 
 ## Conclusions
+
+## Appendix
 
 ## Inspiration for this project
 
