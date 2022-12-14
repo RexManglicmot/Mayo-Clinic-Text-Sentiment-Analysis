@@ -715,12 +715,6 @@ wordcloud(
 )
 ```
 
-    ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
-    ## department could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
-    ## treatment could not be fit on page. It will not be plotted.
-
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 The wordcloud above shows the overall patient word count from the 228
@@ -778,13 +772,10 @@ wordcloud(
     ## appointment could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## medical could not be fit on page. It will not be plotted.
+    ## department could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## hospital could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## care could not be fit on page. It will not be plotted.
+    ## pain could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
@@ -868,6 +859,9 @@ ggplot(sentiment_data_loughran, aes(x= sentiment2, y=n)) +
 Even more interesting.
 
 ## Limitations
+
+Depending on the dictionary, there could be a diverse set of insights
+from patients reviews.
 
 ## Conclusions
 
