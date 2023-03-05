@@ -511,7 +511,21 @@ Next, lets use sentiment dictionaries on our three groups; overall, 1 rating, an
 
 ## Sentiment: Positive and Negative Words
 
-**Explain more about Sentiment Analysis and cite sources**
+Sentiment Analysis (SA) is a method to evaluate written text or language based on a dictionary. In other words, SA is used to extract meaning from a text. SA provides the ability to understand an observation's (i.e., customer) experience regarding a topic. SA is used when there is large volume of text and to create a generalization of such.
+
+### Appplications
+
+* Customer feedback. Understanding user review comments on a web platform (i.e., Twitter)
+* Analyze survey responses
+* Competitor research
+
+### Pros
+
+* Diminish the risk of bias from a person investigating comments. As such, it diminish personal perceptions of the data and takes away the person's mood and other incalculable biases.
+* Quick to implement.
+
+
+### Cons
 
 ```{r, message=FALSE}
 #install.packages('SentimentAnalysis') #installed on 12/12/22

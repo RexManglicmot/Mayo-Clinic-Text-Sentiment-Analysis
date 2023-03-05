@@ -21,6 +21,9 @@ RexManglicmot
 -   <a href="#sentiment-positive-and-negative-words"
     id="toc-sentiment-positive-and-negative-words">Sentiment: Positive and
     Negative Words</a>
+    -   <a href="#appplications" id="toc-appplications">Appplications</a>
+    -   <a href="#pros" id="toc-pros">Pros</a>
+    -   <a href="#cons" id="toc-cons">Cons</a>
 -   <a href="#limitations" id="toc-limitations">Limitations</a>
 -   <a href="#conclusions" id="toc-conclusions">Conclusions</a>
 -   <a href="#appendix" id="toc-appendix">Appendix</a>
@@ -44,8 +47,6 @@ Things Need to Do/Questions:
 -   Need to find code to align left on the text column in the cleaning
     section
 -   Learn how to create a US heat map code in the EDA section
--   learn how to remove file from Github (html document) but keep
-    locally
 -   look for a dictionary that has Male and Female first names and run
     it against data to see how many of each gender is present in the
     reviews
@@ -715,6 +716,9 @@ wordcloud(
 )
 ```
 
+    ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
+    ## medical could not be fit on page. It will not be plotted.
+
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 The wordcloud above shows the overall patient word count from the 228
@@ -772,10 +776,10 @@ wordcloud(
     ## appointment could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## department could not be fit on page. It will not be plotted.
+    ## surgery could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## pain could not be fit on page. It will not be plotted.
+    ## doctor could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
@@ -801,7 +805,27 @@ rating, and 5 rating.
 
 ## Sentiment: Positive and Negative Words
 
-**Explain more about Sentiment Analysis and cite sources**
+Sentiment Analysis (SA) is a method to evaluate written text or language
+based on a dictionary. In other words, SA is used to extract meaning
+from a text. SA provides the ability to understand an observation’s
+(i.e., customer) experience regarding a topic. SA is used when there is
+large volume of text and to create a generalization of such.
+
+### Appplications
+
+-   Customer feedback. Understanding user review comments on a web
+    platform (i.e., Twitter)
+-   Analyze survey responses
+-   Competitor research
+
+### Pros
+
+-   Diminish the risk of bias from a person investigating comments. As
+    such, it diminish personal perceptions of the data and takes away
+    the person’s mood and other incalculable biases.
+-   Quick to implement.
+
+### Cons
 
 ``` r
 #install.packages('SentimentAnalysis') #installed on 12/12/22
