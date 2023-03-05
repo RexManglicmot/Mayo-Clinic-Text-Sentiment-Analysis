@@ -18,7 +18,6 @@ Things Need to Do/Questions:
 * Need to List of the metrics in US News for evaluating hospitals and pick up where they left off or, pick up on what is missing in their analyses. 
 * Need to find code to align left on the text column in the cleaning section
 * Learn how to create a US heat map code in the EDA section
-* learn how to remove file from Github (html document) but keep locally
 * look for a dictionary that has Male and Female first names and run it against data to see how many of each gender is present in the reviews
 * look for code how to highlight certain columns in a barchart (i.e., ratings barchart below)
 * Create and cite sources of the benefits of wordclouds
