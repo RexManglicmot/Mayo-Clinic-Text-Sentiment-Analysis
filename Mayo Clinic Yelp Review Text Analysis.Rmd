@@ -554,9 +554,12 @@ ggplot(sentiment_data_nrc, aes(x= sentiment2, y=n)) +
 
 ```
 
-Interesting.
+Insights:
 
-Let's try another dictionary, 'loughran'
+* Based on the NRC dictionary, majority of the patients expressed the sentiment "positive" in their reviews, which had the most counts, followed by trust. 
+* The following four sentiments thereafter, as a group, be categorized as ambiguous and negative.
+
+Interesting. What does this tell us? There is a mix big of emotions from patients. It's best to try another dictionary. So, let's try 'Loughran'
 
 ```{r, message=FALSE}
 #use data6 as it is the most funneled data

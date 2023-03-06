@@ -717,7 +717,13 @@ wordcloud(
 ```
 
     ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
-    ## medical could not be fit on page. It will not be plotted.
+    ## patient could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, : care
+    ## could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
+    ## doctor could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
@@ -776,10 +782,13 @@ wordcloud(
     ## appointment could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## patient could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
     ## surgery could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## doctor could not be fit on page. It will not be plotted.
+    ## hospital could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
@@ -855,9 +864,16 @@ ggplot(sentiment_data_nrc, aes(x= sentiment2, y=n)) +
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-Interesting.
+Insights:
 
-Let’s try another dictionary, ‘loughran’
+-   Based on the NRC dictionary, majority of the patients expressed the
+    sentiment “positive” in their reviews, which had the most counts,
+    followed by trust.
+-   The following four sentiments thereafter, as a group, be categorized
+    as ambiguous and negative.
+
+Interesting. What does this tell us? There is a mix big of emotions from
+patients. It’s best to try another dictionary. So, let’s try ‘Loughran’
 
 ``` r
 #use data6 as it is the most funneled data
