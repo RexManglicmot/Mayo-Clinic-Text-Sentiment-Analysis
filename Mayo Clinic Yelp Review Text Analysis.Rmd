@@ -554,6 +554,8 @@ ggplot(sentiment_data_nrc, aes(x= sentiment2, y=n)) +
 
 ```
 
+Interesting.
+
 Insights:
 
 * Based on the NRC dictionary, majority of the patients expressed the sentiment "positive" in their reviews, which had the most counts, followed by trust. 
@@ -582,8 +584,14 @@ ggplot(sentiment_data_loughran, aes(x= sentiment2, y=n)) +
 
 Even more interesting.
 
+Insights:
+
+* Using this dictionary, we see that many of the reviews a categorized as negative.
+* There is a 2x count of negative vs positive reviews. 
+* Uncertainty, litigious, constraining categories could further be included as negative.
+
 ## Limitations
-Depending on the dictionary, there could be a diverse set of insights from patients reviews.
+Depending on the dictionary, there could be a diverse set of insights from patients reviews. Using only two dictionaries, we see that the reviews can easily be interpreted in different ways. Thus, sentiment analysis although a good tool to understand patient perceptions are not alone should be a sole tool to understand. 
 
 ## Conclusions
 

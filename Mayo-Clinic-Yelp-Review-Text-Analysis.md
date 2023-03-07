@@ -716,14 +716,11 @@ wordcloud(
 )
 ```
 
-    ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
-    ## patient could not be fit on page. It will not be plotted.
-
     ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, : care
     ## could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
-    ## doctor could not be fit on page. It will not be plotted.
+    ## appointments could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
@@ -779,16 +776,16 @@ wordcloud(
 ```
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## appointment could not be fit on page. It will not be plotted.
+    ## absolutely could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## patient could not be fit on page. It will not be plotted.
+    ## doctor could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## surgery could not be fit on page. It will not be plotted.
+    ## months could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## hospital could not be fit on page. It will not be plotted.
+    ## experience could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
@@ -864,6 +861,8 @@ ggplot(sentiment_data_nrc, aes(x= sentiment2, y=n)) +
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
+Interesting.
+
 Insights:
 
 -   Based on the NRC dictionary, majority of the patients expressed the
@@ -898,10 +897,21 @@ ggplot(sentiment_data_loughran, aes(x= sentiment2, y=n)) +
 
 Even more interesting.
 
+Insights:
+
+-   Using this dictionary, we see that many of the reviews a categorized
+    as negative.
+-   There is a 2x count of negative vs positive reviews.
+-   Uncertainty, litigious, constraining categories could further be
+    included as negative.
+
 ## Limitations
 
 Depending on the dictionary, there could be a diverse set of insights
-from patients reviews.
+from patients reviews. Using only two dictionaries, we see that the
+reviews can easily be interpreted in different ways. Thus, sentiment
+analysis although a good tool to understand patient perceptions are not
+alone should be a sole tool to understand.
 
 ## Conclusions
 
