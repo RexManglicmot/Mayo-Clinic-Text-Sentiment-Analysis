@@ -55,6 +55,7 @@ Things Need to Do/Questions:
 -   Create and cite sources of the benefits of wordclouds
 -   Properly center the US News pic on git_document (somehow works fine
     in RStudio html document?)
+-   Add more dictionaries
 
 ## Introduction
 
@@ -773,13 +774,13 @@ wordcloud(
 ```
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## surgery could not be fit on page. It will not be plotted.
+    ## appointment could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## care could not be fit on page. It will not be plotted.
+    ## patients could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## hospital could not be fit on page. It will not be plotted.
+    ## people could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 

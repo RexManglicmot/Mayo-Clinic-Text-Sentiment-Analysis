@@ -22,6 +22,7 @@ Things Need to Do/Questions:
 * look for code how to highlight certain columns in a barchart (i.e., ratings barchart below)
 * Create and cite sources of the benefits of wordclouds
 * Properly center the US News pic on git_document (somehow works fine in RStudio html document?)
+* Add more dictionaries
 
 ## Introduction
 <center>
