@@ -718,7 +718,7 @@ wordcloud(
 ```
 
     ## Warning in wordcloud(words = data7$word, freq = data7$n, max.words = 50, :
-    ## doctor could not be fit on page. It will not be plotted.
+    ## appointment could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
@@ -774,13 +774,16 @@ wordcloud(
 ```
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## appointment could not be fit on page. It will not be plotted.
+    ## told could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## doctor could not be fit on page. It will not be plotted.
+
+    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
+    ## surgeon could not be fit on page. It will not be plotted.
 
     ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
     ## patients could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(words = data_A1T$word, freq = data_A1T$n, max.words = 50, :
-    ## people could not be fit on page. It will not be plotted.
 
 ![](Mayo-Clinic-Yelp-Review-Text-Analysis_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
@@ -914,13 +917,16 @@ alone should be a sole tool to understand.
 
 ## Inspiration for this project
 
-Having worked at a non-profit hopsital for six years made me realize the
+Having worked at a non-profit hospital for six years made me realize the
 importance of healthcare providers, patients, and the entire health
 ecosystem. I wanted to see how my hospital ranked among others. Needless
 to say, we did not make the rankings. That realization did spark an
-interest to see what metrics did the top hospitals had over othres. I
+interest to see what metrics did the top hospitals had over others. I
 wanted to take a different approach and use patients reviews as a
 metric.
+
+Using patient reviews provides an unadultered way to understand
+patients’ perspectives.
 
 [^1]: <https://www.chcf.org/publication/2022-edition-health-care-costs-101/>
 

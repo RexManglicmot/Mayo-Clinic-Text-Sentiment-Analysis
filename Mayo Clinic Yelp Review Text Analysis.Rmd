@@ -601,6 +601,8 @@ Depending on the dictionary, there could be a diverse set of insights from patie
 
 ## Inspiration for this project
 
-Having worked at a non-profit hopsital for six years made me realize the importance of healthcare providers, patients, and the entire health ecosystem. I wanted to see how my hospital ranked among others. Needless to say, we did not make the rankings. That realization did spark an interest to see what metrics did the top hospitals had over othres. I wanted to take a different approach and use patients reviews as a metric. 
+Having worked at a non-profit hospital for six years made me realize the importance of healthcare providers, patients, and the entire health ecosystem. I wanted to see how my hospital ranked among others. Needless to say, we did not make the rankings. That realization did spark an interest to see what metrics did the top hospitals had over others. I wanted to take a different approach and use patients reviews as a metric. 
+
+Using patient reviews provides an unadultered way to understand patients' perspectives. 
 
 
